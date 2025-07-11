@@ -46,15 +46,45 @@ describe("Vault", function() {
             });
 
             return { vault, amount }
-         
         }
 
-        it("should be accept ETH via receive()", async function() {
+        async function donate() {
+            const { vault } = await loadFixture(deploy);
+            const amount = ethers.parseEther("1");
             
+            const signers = await ethers.getSigners();
+            const user2 = signers[1];
+
+            user2.sendTransaction({
+                to: vault.target,
+                value: amount
+            });
+
+            return { vault, amount }
+        }
+
+        it("should accept ETH via receive()", async function() {
             const { vault, amount } = await loadFixture(receive);
 
             expect(await ethers.provider.getBalance(vault.target) == amount);
+        });
 
+        it("should accept ETH via donate() ", async function () {
+            const { vault, amount } = await loadFixture(donate);
+
+            expect(await ethers.provider.getBalance(vault.target) == amount);
+        });
+
+        it("should reverted", async function () {
+            const { user1, vault } = await loadFixture(deploy);
+
+            await expect(
+                user1.sendTransaction({
+                to: vault.target,
+                data: "0x12345678",
+                value: 0,
+                })
+            ).to.be.revertedWith("Something gone wrong");
         });
 
     });
