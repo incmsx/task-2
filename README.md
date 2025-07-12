@@ -1,13 +1,5 @@
-# Sample Hardhat Project
+#Что здесь происходит?
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+Контракт был задеплоен в sepolia
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+[0x26fb9c36022f6A95D345f2D3092f86Be9Ea85FA6](https://sepolia.etherscan.io/address/0x26fb9c36022f6A95D345f2D3092f86Be9Ea85FA6)
