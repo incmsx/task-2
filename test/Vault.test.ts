@@ -88,7 +88,7 @@ describe("Vault", function() {
         });
     });
 
-    describe("Withdraw and Refund", function(){
+    describe("Refund", function(){
 
         async function refund() {
             const signers = await ethers.getSigners();
@@ -111,6 +111,31 @@ describe("Vault", function() {
                 // { includeFee: true }
             )
         });
+
+    });
+
+    describe("Withdraw", function(){
+
+        async function payFromAllSigners() {
+            const signers = await ethers.getSigners();
+            const amount = ethers.parseEther("1");
+
+            return await payment(signers, amount);
+        }
+
+        it("should withdraw money to owner", async function () {
+            const { vault, signers, amount } = await loadFixture(payFromAllSigners);
+            const owner = signers[0];
+
+            const summ = amount * BigInt(signers.length);
+
+            await expect(
+                vault.connect(owner).withdraw()
+            ).to.changeEtherBalances(
+                [vault, owner],
+                [-summ, summ],
+            )
+        })
 
     });
     
